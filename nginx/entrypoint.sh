@@ -1,0 +1,8 @@
+#!/bin/sh
+set -eu
+
+envsubst '${AUTH_SERVICE_HOST} ${AUTH_SERVICE_PORT} ${MEDICAL_IMAGING_SERVICE_HOST} ${MEDICAL_IMAGING_SERVICE_PORT} ${GATEWAY_HTTP_PORT} ${GATEWAY_HTTPS_PORT} ${GATEWAY_SERVER_NAME} ${TLS_CERT_PATH} ${TLS_KEY_PATH} ${CORS_ALLOW_ORIGIN} ${CORS_ALLOW_CREDENTIALS} ${AUTH_VALIDATE_PATH} ${CLIENT_MAX_BODY_SIZE}' \
+  < /etc/nginx/templates/nginx.conf.template \
+  > /etc/nginx/nginx.conf
+
+exec nginx -g 'daemon off;'

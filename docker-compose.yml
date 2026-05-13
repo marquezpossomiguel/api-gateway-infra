@@ -1,0 +1,44 @@
+services:
+  api-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: api-gateway-infra:latest
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "${GATEWAY_HTTP_PORT:-80}:${GATEWAY_HTTP_PORT:-80}"
+      - "${GATEWAY_HTTPS_PORT:-443}:${GATEWAY_HTTPS_PORT:-443}"
+    volumes:
+      - ${TLS_CERT_HOST_PATH}:${TLS_CERT_PATH}:ro
+      - ${TLS_KEY_HOST_PATH}:${TLS_KEY_PATH}:ro
+    depends_on:
+      - auth-service
+      - medical-imaging-service
+    networks:
+      - gateway-internal
+
+  auth-service:
+    image: ${AUTH_SERVICE_IMAGE:-ghcr.io/example/auth-service:latest}
+    restart: unless-stopped
+    expose:
+      - "${AUTH_SERVICE_PORT:-8001}"
+    environment:
+      - PORT=${AUTH_SERVICE_PORT:-8001}
+    networks:
+      - gateway-internal
+
+  medical-imaging-service:
+    image: ${MEDICAL_IMAGING_SERVICE_IMAGE:-ghcr.io/example/medical-imaging-service:latest}
+    restart: unless-stopped
+    expose:
+      - "${MEDICAL_IMAGING_SERVICE_PORT:-8002}"
+    environment:
+      - PORT=${MEDICAL_IMAGING_SERVICE_PORT:-8002}
+    networks:
+      - gateway-internal
+
+networks:
+  gateway-internal:
+    driver: bridge
