@@ -10,6 +10,7 @@ Infraestructura de API Gateway usando Nginx como reverse proxy para exponer una 
 - HTTPS/TLS con rutas de certificados configurables por variables de entorno.
 - Redirección automática HTTP -> HTTPS.
 - CORS configurable.
+- CORS con validación de origen exacto contra `CORS_ALLOW_ORIGIN`.
 - Validación JWT en gateway mediante `auth_request` hacia endpoint interno del Auth Service.
 - Logs de acceso y error en Nginx.
 - Seguridad básica (`server_tokens off`, headers de seguridad, límite de body).
