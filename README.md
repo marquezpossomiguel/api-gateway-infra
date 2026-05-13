@@ -62,4 +62,5 @@ docker compose --env-file .env up -d --build
 
 - Reemplazar imágenes de ejemplo (`AUTH_SERVICE_IMAGE`, `MEDICAL_IMAGING_SERVICE_IMAGE`) por imágenes reales.
 - Usar certificados válidos de CA pública (o ACM/Let's Encrypt según entorno).
+- Asegurar permisos restrictivos para la clave privada TLS en host (`chmod 600` para `TLS_KEY_HOST_PATH`).
 - Mantener `.env` fuera de control de versiones y sin secretos en texto plano del repositorio.

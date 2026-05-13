@@ -49,7 +49,7 @@ http {
   server {
     listen ${GATEWAY_HTTP_PORT};
     server_name ${GATEWAY_SERVER_NAME};
-    return 301 https://$host:${GATEWAY_HTTPS_PORT}$request_uri;
+    return 301 https://$host$request_uri;
   }
 
   server {
@@ -74,6 +74,12 @@ http {
 
     location = /health {
       add_header Content-Type text/plain;
+      add_header Access-Control-Allow-Origin "$cors_allow_origin" always;
+      add_header Access-Control-Allow-Credentials "${CORS_ALLOW_CREDENTIALS}" always;
+      add_header Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS" always;
+      add_header Access-Control-Allow-Headers "Authorization, Content-Type, X-Requested-With" always;
+      add_header Access-Control-Max-Age 86400 always;
+      add_header Access-Control-Expose-Headers "Content-Length, Content-Type" always;
       return 200 'ok';
     }
 
